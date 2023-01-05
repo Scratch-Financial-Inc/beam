@@ -17,12 +17,20 @@
  */
 
 import '../repositories/models/unit.dart';
-import 'abstract_node.dart';
+import 'node.dart';
+import 'parent_node.dart';
 
 class UnitModel extends NodeModel {
-  final String id;
+  UnitModel.fromResponse(UnitResponseModel unit, ParentNodeModel parent)
+      : super(
+          id: unit.id,
+          parent: parent,
+          title: unit.title,
+        );
 
-  UnitModel.fromResponse(UnitResponseModel unit)
-      : id = unit.id,
-        super(title: unit.title);
+  @override
+  NodeModel getFirstUnit() => this;
+
+  @override
+  NodeModel? getNodeByTreeIds(List<String> treeIds) => this;
 }

@@ -26,6 +26,7 @@ import apache_beam as beam
 from apache_beam.typehints import row_type
 from apache_beam.typehints import trivial_inference
 from apache_beam.typehints import typehints
+from apache_beam.utils import python_callable
 
 global_int = 1
 
@@ -35,6 +36,14 @@ class TrivialInferenceTest(unittest.TestCase):
     self.assertEqual(
         expected,
         trivial_inference.infer_return_type(f, inputs, debug=True, depth=depth))
+
+  # The meaning of Jump Offsets in Python 3.10 was changed.
+  # https://github.com/python/cpython/issues/71316
+  # Reported as a bug in Beam https://github.com/apache/beam/issues/21671
+  def testJumpOffsets(self):
+    fn = lambda x: False
+    wrapper = lambda x, *args, **kwargs: [x] if fn(x, *args, **kwargs) else []
+    self.assertReturnType(typehints.List[int], wrapper, [int])
 
   def testBuildListUnpack(self):
     # Lambda uses BUILD_LIST_UNPACK opcode in Python 3.
@@ -449,6 +458,12 @@ class TrivialInferenceTest(unittest.TestCase):
         typehints.Tuple[int, str],
         lambda row: (row.x, getattr(row, 'y')),
         [row_type.RowTypeConstraint.from_fields([('x', int), ('y', str)])])
+
+  def testPyCallable(self):
+    self.assertReturnType(
+        typehints.Tuple[int, str],
+        python_callable.PythonCallableWithSource("lambda x: (x, str(x))"),
+        [int])
 
 
 if __name__ == '__main__':

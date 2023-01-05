@@ -20,7 +20,9 @@
 #   name: WindowAccumulationMode
 #   description: Task from katas to count events using ACCUMULATING as accumulation mode
 #   multifile: true
-#   context_line: 51
+#   files:
+#    - name: generate_event.py
+#   context_line: 36
 #   categories:
 #     - Streaming
 #   complexity: ADVANCED
@@ -40,7 +42,7 @@ from apache_beam.transforms.trigger import AccumulationMode
 from apache_beam.utils.timestamp import Duration
 from apache_beam.options.pipeline_options import PipelineOptions
 from apache_beam.options.pipeline_options import StandardOptions
-from log_elements import LogElements
+from apache_beam.transforms.util import LogElements
 
 
 class CountEventsWithAccumulating(beam.PTransform):

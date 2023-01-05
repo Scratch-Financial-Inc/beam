@@ -16,22 +16,33 @@
  * limitations under the License.
  */
 
-import 'package:json_annotation/json_annotation.dart';
-
+import '../repositories/models/get_content_tree_response.dart';
 import 'module.dart';
+import 'node.dart';
+import 'parent_node.dart';
 
-part 'content_tree.g.dart';
-
-@JsonSerializable(createToJson: false)
-class ContentTreeModel {
-  final String sdkId;
+class ContentTreeModel extends ParentNodeModel {
   final List<ModuleModel> modules;
 
-  const ContentTreeModel({
-    required this.sdkId,
-    required this.modules,
-  });
+  String get sdkId => id;
 
-  factory ContentTreeModel.fromJson(Map<String, dynamic> json) =>
-      _$ContentTreeModelFromJson(json);
+  @override
+  List<NodeModel> get nodes => modules;
+
+  const ContentTreeModel({
+    required super.id,
+    required this.modules,
+  }) : super(
+          parent: null,
+          title: '',
+          nodes: modules,
+        );
+
+  ContentTreeModel.fromResponse(GetContentTreeResponse response)
+      : this(
+          id: response.sdkId,
+          modules: response.modules
+              .map(ModuleModel.fromResponse)
+              .toList(growable: false),
+        );
 }

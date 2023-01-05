@@ -21,7 +21,9 @@
 #   name: EarlyTriggers
 #   description: Task from katas to count events using early triggers
 #   multifile: true
-#   context_line: 46
+#   files:
+#     - name: generate_event.py
+#   context_line: 36
 #   categories:
 #     - Streaming
 #   complexity: MEDIUM
@@ -41,7 +43,7 @@ from apache_beam.transforms.trigger import AfterWatermark
 from apache_beam.transforms.trigger import AfterCount
 from apache_beam.transforms.trigger import AccumulationMode
 from apache_beam.utils.timestamp import Duration
-from log_elements import LogElements
+from apache_beam.transforms.util import LogElements
 
 
 class CountEventsWithEarlyTrigger(beam.PTransform):

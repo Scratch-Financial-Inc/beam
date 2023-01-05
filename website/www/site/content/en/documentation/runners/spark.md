@@ -243,7 +243,7 @@ See [here](/roadmap/portability/#sdk-harness-config) for details.)
 
 ###  Running on Dataproc cluster (YARN backed)
 
-To run Beam jobs written in Python, Go, and other supported languages, you can use the `SparkRunner` and `PortableRunner` as described on the Beam's [Spark Runner](https://beam.apache.org/documentation/runners/spark/) page (also see [Portability Framework Roadmap](https://beam.apache.org/roadmap/portability/)).
+To run Beam jobs written in Python, Go, and other supported languages, you can use the `SparkRunner` and `PortableRunner` as described on the Beam's [Spark Runner](/documentation/runners/spark/) page (also see [Portability Framework Roadmap](/roadmap/portability/)).
 
 The following example runs a portable Beam job in Python from the Dataproc cluster's master node with Yarn backed.
 
@@ -293,7 +293,7 @@ python -m apache_beam.examples.wordcount \
 - `--runner`(required): `SparkRunner`.
 - `--output_executable_path`(required): path for the bundle jar to be created.
 - `--output`(required): where output shall be written.
-- `--spark_version`(optional): select spark version 2 (default) or 3.
+- `--spark_version`(optional): select spark version 3 (default) or 2 (deprecated!).
 
 5. Submit spark job to Dataproc cluster's master node.
 

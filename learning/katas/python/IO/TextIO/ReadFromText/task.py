@@ -18,7 +18,9 @@
 #   name: ReadFromText
 #   description: Task from katas to read from text files.
 #   multifile: true
-#   context_line: 29
+#   files:
+#     - name: countries.txt
+#   context_line: 33
 #   categories:
 #     - IO
 #   complexity: BASIC
@@ -30,11 +32,9 @@
 
 import apache_beam as beam
 
-from log_elements import LogElements
-
 with beam.Pipeline() as p:
 
   file_path = 'countries.txt'
 
   (p | beam.io.ReadFromText(file_path) | beam.Map(lambda country: country.upper())
-     | LogElements())
+     | beam.LogElements())

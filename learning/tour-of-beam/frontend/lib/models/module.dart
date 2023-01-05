@@ -16,28 +16,38 @@
  * limitations under the License.
  */
 
-import 'package:json_annotation/json_annotation.dart';
 import 'package:playground_components/playground_components.dart';
 
-import 'abstract_node.dart';
+import '../repositories/models/module.dart';
+import 'node.dart';
+import 'parent_node.dart';
 
-part 'module.g.dart';
-
-@JsonSerializable(createToJson: false)
-class ModuleModel {
-  final String id;
-  final String title;
+class ModuleModel extends ParentNodeModel {
   final Complexity complexity;
-  @JsonKey(fromJson: NodeModel.fromMaps)
-  final List<NodeModel> nodes;
 
   const ModuleModel({
-    required this.id,
-    required this.title,
+    required super.id,
+    required super.nodes,
+    required super.parent,
+    required super.title,
     required this.complexity,
-    required this.nodes,
   });
 
-  factory ModuleModel.fromJson(Map<String, dynamic> json) =>
-      _$ModuleModelFromJson(json);
+  factory ModuleModel.fromResponse(ModuleResponseModel moduleResponse) {
+    final module = ModuleModel(
+      complexity: moduleResponse.complexity,
+      nodes: [],
+      id: moduleResponse.id,
+      parent: null,
+      title: moduleResponse.title,
+    );
+
+    module.nodes.addAll(
+      moduleResponse.nodes.map<NodeModel>(
+        (node) => NodeModel.fromResponse(node, module),
+      ),
+    );
+
+    return module;
+  }
 }
